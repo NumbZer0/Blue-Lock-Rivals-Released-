@@ -29,14 +29,19 @@ local Window = Rayfield:CreateWindow({
    }
 })
 
+local sharkStealActive = false
+local lastSharkTime = 0
+local sharkCooldown = 3
+local sharkDistance = 15
+
 local VulnTab = Window:CreateTab("Vuln", 116346018087278)
+local KuronaTab = Window:CreateTab("Kurona", 116610644521231) 
 
 local ParagraphCreator = VulnTab:CreateParagraph({
    Title = "SoyDevWin:",
    Content = "use this script as you wish. 😈"
 })
 
--- Seção Hitbox (Versão Invisível)
 local SectionHitbox = VulnTab:CreateSection("Hitbox Settings")
 
 local hitboxSize = 5
@@ -141,39 +146,6 @@ local ButtonAutoDrible = VulnTab:CreateButton({
    end
 })
 
-game:GetService("RunService").Heartbeat:Connect(function()
-   local player = game.Players.LocalPlayer
-   if not player or not player.Character then return end
-   
-   local hrp = player.Character:FindFirstChild("HumanoidRootPart")
-   if not hrp then return end
-   
-   local playersNearby = false
-   for _, other in ipairs(game.Players:GetPlayers()) do
-      if other ~= player and other.Character then
-         local otherHrp = other.Character:FindFirstChild("HumanoidRootPart")
-         if otherHrp and (hrp.Position - otherHrp.Position).Magnitude < 25 then
-            playersNearby = true
-            break
-         end
-      end
-   end
-   
-   if playersNearby then
-      if autoSlideActive then
-         game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("BallService"):WaitForChild("RE"):WaitForChild("Slide"):FireServer()
-      end
-      
-      if autoDribleActive then
-         game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("BallService"):WaitForChild("RE"):WaitForChild("Dribble"):FireServer(unpack(dribleArgs))
-      end
-   end
-   
-   if hitboxActive then
-      updateHitboxes()
-   end
-end)
-
 local SectionPlayer = VulnTab:CreateSection("Player")
 
 local infStaminaActive = false
@@ -215,20 +187,6 @@ local ButtonNoCooldown = VulnTab:CreateButton({
    end
 })
 
-game:GetService("RunService").Heartbeat:Connect(function()
-   if infStaminaActive then
-      pcall(function()
-         local stats = game.Players.LocalPlayer:FindFirstChild("PlayerStats")
-         if stats then
-            local stamina = stats:FindFirstChild("Stamina")
-            if stamina and stamina:IsA("NumberValue") then
-               stamina.Value = 100
-            end
-         end
-      end)
-   end
-end)
-
 local SectionMain = VulnTab:CreateSection("Nothing.")
 
 local ButtonKill = VulnTab:CreateButton({
@@ -240,6 +198,99 @@ local ButtonKill = VulnTab:CreateButton({
       end
    end
 })
+
+local SectionKurona = KuronaTab:CreateSection("Kurona Tricks")
+
+local ButtonSharkSteal = KuronaTab:CreateButton({
+   Name = "Shark Steal",
+   Callback = function()
+      sharkStealActive = not sharkStealActive
+      Rayfield:Notify({
+         Title = "Shark Steal",
+         Content = sharkStealActive and "ON" or "OFF",
+         Duration = 3,
+         Image = 4483362458
+      })
+   end
+})
+
+local SliderSharkRange = KuronaTab:CreateSlider({
+   Name = "Activation Distance ",
+   Range = {5, 30},
+   Increment = 1,
+   Suffix = "m",
+   CurrentValue = 15,
+   Callback = function(Value)
+      sharkDistance = Value
+   end
+})
+
+local SliderSharkCooldown = KuronaTab:CreateSlider({
+   Name = "Waiting Time",
+   Range = {0.1, 10}, 
+   Increment = 0.1,
+   Suffix = "s",
+   CurrentValue = 3,
+   Callback = function(Value)
+      sharkCooldown = Value
+   end
+})
+
+game:GetService("RunService").Heartbeat:Connect(function()
+   local player = game.Players.LocalPlayer
+   if not player or not player.Character then return end
+   
+   local hrp = player.Character:FindFirstChild("HumanoidRootPart")
+   if not hrp then return end
+   
+   -- Verificação de jogadores próximos
+   for _, other in ipairs(game.Players:GetPlayers()) do
+      if other ~= player and other.Character then
+         local otherHrp = other.Character:FindFirstChild("HumanoidRootPart")
+         if otherHrp then
+            local distance = (hrp.Position - otherHrp.Position).Magnitude
+            
+            if distance < 25 then
+               if autoSlideActive then
+                  game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("BallService"):WaitForChild("RE"):WaitForChild("Slide"):FireServer()
+               end
+               
+               if autoDribleActive then
+                  game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("BallService"):WaitForChild("RE"):WaitForChild("Dribble"):FireServer(unpack(dribleArgs))
+               end
+            end
+            
+            -- Shark Steal
+            if sharkStealActive and distance <= sharkDistance and (tick() - lastSharkTime) >= sharkCooldown then
+               pcall(function()
+                  local args = {
+                     "SharkSteal",
+                     other.Character
+                  }
+                  game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("AbilityService"):WaitForChild("RE"):WaitForChild("Ability"):FireServer(unpack(args))
+                  lastSharkTime = tick()
+               end)
+            end
+         end
+      end
+   end
+   
+   if hitboxActive then
+      updateHitboxes()
+   end
+   
+   if infStaminaActive then
+      pcall(function()
+         local stats = player:FindFirstChild("PlayerStats")
+         if stats then
+            local stamina = stats:FindFirstChild("Stamina")
+            if stamina and stamina:IsA("NumberValue") then
+               stamina.Value = 100
+            end
+         end
+      end)
+   end
+end)
 
 game:GetService("UserInputService").WindowFocusReleased:Connect(function()
    for _, part in pairs(hitboxParts) do
