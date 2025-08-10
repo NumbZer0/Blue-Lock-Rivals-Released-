@@ -1,0 +1,316 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+   Name = "Emperor Hub",
+   Icon = 116346018087278,
+   LoadingTitle = "Emperor Hub",
+   LoadingSubtitle = "by SoyDevWin",
+   Theme = "AmberGlow",
+   ToggleUIKeybind = "K",
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = nil,
+      FileName = "Emperor Hub"
+   },
+   Discord = {
+      Enabled = true,
+      Invite = "R9Cg8rgrcT",
+      RememberJoins = true
+   },
+   KeySystem = true,
+   KeySettings = {
+      Title = "Emperor Keys",
+      Subtitle = "Key System",
+      Note = "the keys are: OneEyedGhoul, MichaelKaiser",
+      FileName = "Key",
+      SaveKey = true,
+      GrabKeyFromSite = false,
+      Key = {"OneEyedGhoul", "oneeyedghoul", "MichaelKaiser", "michaelkaiser"}
+   }
+})
+
+local VulnTab = Window:CreateTab("Vuln", 116346018087278)
+
+local ParagraphCreator = VulnTab:CreateParagraph({
+   Title = "SoyDevWin:",
+   Content = "use this script as you wish. 😈"
+})
+
+-- Seção Hitbox (Versão Invisível)
+local SectionHitbox = VulnTab:CreateSection("Hitbox Settings")
+
+local hitboxSize = 5
+local hitboxActive = false
+local hitboxParts = {}
+
+local function createInvisibleHitbox(player)
+    if hitboxParts[player] then return end
+    
+    local fakePart = Instance.new("Part")
+    fakePart.Name = "InvisibleHitbox"
+    fakePart.Size = Vector3.new(hitboxSize, hitboxSize, hitboxSize)
+    fakePart.Transparency = 1
+    fakePart.CanCollide = true
+    fakePart.Anchored = false
+    fakePart.Massless = true
+    
+    local weld = Instance.new("WeldConstraint")
+    weld.Part0 = player.Character.HumanoidRootPart
+    weld.Part1 = fakePart
+    
+    fakePart.Parent = workspace
+    weld.Parent = fakePart
+    
+    hitboxParts[player] = fakePart
+end
+
+local function updateHitboxes()
+    for _, player in ipairs(game.Players:GetPlayers()) do
+        if player ~= game.Players.LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            if hitboxActive then
+                createInvisibleHitbox(player)
+                if hitboxParts[player] then
+                    hitboxParts[player].Size = Vector3.new(hitboxSize, hitboxSize, hitboxSize)
+                end
+            else
+                if hitboxParts[player] then
+                    hitboxParts[player]:Destroy()
+                    hitboxParts[player] = nil
+                end
+            end
+        end
+    end
+end
+
+local ButtonHitbox = VulnTab:CreateButton({
+   Name = "Expand Hitbox",
+   Callback = function()
+      hitboxActive = not hitboxActive
+      updateHitboxes()
+      Rayfield:Notify({
+         Title = "Hitbox",
+         Content = hitboxActive and ("ON (Size: "..hitboxSize..")") or "OFF",
+         Duration = 3,
+         Image = 4483362458
+      })
+   end
+})
+
+local SliderHitbox = VulnTab:CreateSlider({
+   Name = "Hitbox Size",
+   Range = {1, 15}, 
+   Increment = 0.5,
+   Suffix = "m",
+   CurrentValue = 5,
+   Callback = function(Value)
+      hitboxSize = Value
+      if hitboxActive then
+         updateHitboxes()
+      end
+   end
+})
+
+local SectionAuto = VulnTab:CreateSection("Cold ")
+
+local autoSlideActive = false
+local ButtonAutoSlide = VulnTab:CreateButton({
+   Name = "Auto Steal (Delayed)",
+   Callback = function()
+      autoSlideActive = not autoSlideActive
+      Rayfield:Notify({
+         Title = "Auto Slide",
+         Content = autoSlideActive and "ON" or "OFF",
+         Duration = 3,
+         Image = 4483362458
+      })
+   end
+})
+
+local autoDribleActive = false
+local dribleArgs = {"fd4e3f5f5e10484b9cd7a5b7efe5f228"}
+local ButtonAutoDrible = VulnTab:CreateButton({
+   Name = "Auto Drible ",
+   Callback = function()
+      autoDribleActive = not autoDribleActive
+      Rayfield:Notify({
+         Title = "Auto Drible",
+         Content = autoDribleActive and "ON" or "OFF",
+         Duration = 3,
+         Image = 4483362458
+      })
+   end
+})
+
+game:GetService("RunService").Heartbeat:Connect(function()
+   local player = game.Players.LocalPlayer
+   if not player or not player.Character then return end
+   
+   local hrp = player.Character:FindFirstChild("HumanoidRootPart")
+   if not hrp then return end
+   
+   local playersNearby = false
+   for _, other in ipairs(game.Players:GetPlayers()) do
+      if other ~= player and other.Character then
+         local otherHrp = other.Character:FindFirstChild("HumanoidRootPart")
+         if otherHrp and (hrp.Position - otherHrp.Position).Magnitude < 25 then
+            playersNearby = true
+            break
+         end
+      end
+   end
+   
+   if playersNearby then
+      if autoSlideActive then
+         game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("BallService"):WaitForChild("RE"):WaitForChild("Slide"):FireServer()
+      end
+      
+      if autoDribleActive then
+         game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("BallService"):WaitForChild("RE"):WaitForChild("Dribble"):FireServer(unpack(dribleArgs))
+      end
+   end
+   
+   if hitboxActive then
+      updateHitboxes()
+   end
+end)
+
+local SectionPlayer = VulnTab:CreateSection("Player")
+
+local infStaminaActive = false
+local ButtonInfStamina = VulnTab:CreateButton({
+   Name = "Inf Stamina",
+   Callback = function()
+      infStaminaActive = not infStaminaActive
+      Rayfield:Notify({
+         Title = "Stamina Infinita",
+         Content = infStaminaActive and "ON" or "OFF",
+         Duration = 3,
+         Image = 4483362458
+      })
+   end
+})
+
+local ButtonNoCooldown = VulnTab:CreateButton({
+   Name = "No Cooldown's",
+   Callback = function()
+      for i, v in pairs(getgc(true)) do
+         if typeof(v) == "table" then
+            for key, value in pairs(v) do
+               if tostring(key):lower():find("cooldown") then
+                  if typeof(value) == "number" then
+                     v[key] = 0
+                  elseif typeof(value) == "function" then
+                     v[key] = function() return 0 end
+                  end
+               end
+            end
+         end
+      end
+      Rayfield:Notify({
+         Title = "No Cooldown",
+         Content = "Cooldown removed.",
+         Duration = 5,
+         Image = 4483362458
+      })
+   end
+})
+
+game:GetService("RunService").Heartbeat:Connect(function()
+   if infStaminaActive then
+      pcall(function()
+         local stats = game.Players.LocalPlayer:FindFirstChild("PlayerStats")
+         if stats then
+            local stamina = stats:FindFirstChild("Stamina")
+            if stamina and stamina:IsA("NumberValue") then
+               stamina.Value = 100
+            end
+         end
+      end)
+   end
+end)
+
+local SectionMain = VulnTab:CreateSection("Nothing.")
+
+local ButtonKill = VulnTab:CreateButton({
+   Name = "Kill",
+   Callback = function()
+      local player = game.Players.LocalPlayer
+      if player and player.Character and player.Character:FindFirstChild("Humanoid") then
+         player.Character.Humanoid.Health = 0
+      end
+   end
+})
+
+game:GetService("UserInputService").WindowFocusReleased:Connect(function()
+   for _, part in pairs(hitboxParts) do
+      part:Destroy()
+   end
+   hitboxParts = {}
+end)
+
+Rayfield:LoadConfiguration()
+
+local UIS = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local Player = game:GetService("Players").LocalPlayer
+
+local function CreateToggleButton()
+    local gui = Instance.new("ScreenGui")
+    gui.Name = "ToggleFluentUI"
+    gui.ResetOnSpawn = false
+    gui.IgnoreGuiInset = true
+    gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    gui.Parent = Player:WaitForChild("PlayerGui")
+
+    local btn = Instance.new("ImageButton")
+    btn.Name = "ZToggle"
+    btn.Size = UDim2.new(0, 60, 0, 60)
+    btn.Position = UDim2.new(1, -80, 0.5, -100)
+    btn.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    btn.Image = "rbxassetid://138191573604636"
+    btn.ScaleType = Enum.ScaleType.Fit
+    btn.AutoButtonColor = true
+    btn.ZIndex = 999
+    btn.Parent = gui
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 40)
+    corner.Parent = btn
+
+    btn.MouseButton1Click:Connect(function()
+        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.K, false, game)
+        task.wait(0.1)
+        VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.K, false, game)
+    end)
+
+    local dragging, dragStart, startPos = false
+
+    btn.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            dragStart = input.Position
+            startPos = btn.Position
+        end
+    end)
+
+    UIS.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = false
+        end
+    end)
+
+    RunService.RenderStepped:Connect(function()
+        if dragging then
+            local delta = UIS:GetMouseLocation() - dragStart
+            btn.Position = UDim2.new(
+                startPos.X.Scale,
+                startPos.X.Offset + math.floor(delta.X * 0.4),
+                startPos.Y.Scale,
+                startPos.Y.Offset + math.floor(delta.Y * 0.4)
+            )
+        end
+    end)
+end
+
+CreateToggleButton()
