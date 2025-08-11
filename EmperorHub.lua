@@ -5,11 +5,11 @@ local Window = Rayfield:CreateWindow({
    Icon = 116346018087278,
    LoadingTitle = "Emperor Hub",
    LoadingSubtitle = "by SoyDevWin",
-   Theme = "AmberGlow",
+   Theme = "Serenity",
    ToggleUIKeybind = "K",
    ConfigurationSaving = {
       Enabled = true,
-      FolderName = nil,
+      FolderName = EmperorHub,
       FileName = "Emperor Hub"
    },
    Discord = {
@@ -35,7 +35,7 @@ local sharkCooldown = 3
 local sharkDistance = 15
 
 local VulnTab = Window:CreateTab("Vuln", 116346018087278)
-local KuronaTab = Window:CreateTab("Kurona", 116610644521231) 
+local KuronaTab = Window:CreateTab("Kurona", 116346018087278) 
 
 local ParagraphCreator = VulnTab:CreateParagraph({
    Title = "SoyDevWin:",
@@ -96,7 +96,7 @@ local ButtonHitbox = VulnTab:CreateButton({
          Title = "Hitbox",
          Content = hitboxActive and ("ON (Size: "..hitboxSize..")") or "OFF",
          Duration = 3,
-         Image = 4483362458
+         Image = 116346018087278
       })
    end
 })
@@ -126,7 +126,7 @@ local ButtonAutoSlide = VulnTab:CreateButton({
          Title = "Auto Slide",
          Content = autoSlideActive and "ON" or "OFF",
          Duration = 3,
-         Image = 4483362458
+         Image = 116346018087278
       })
    end
 })
@@ -141,7 +141,7 @@ local ButtonAutoDrible = VulnTab:CreateButton({
          Title = "Auto Drible",
          Content = autoDribleActive and "ON" or "OFF",
          Duration = 3,
-         Image = 4483362458
+         Image = 116346018087278
       })
    end
 })
@@ -157,7 +157,7 @@ local ButtonInfStamina = VulnTab:CreateButton({
          Title = "Stamina Infinita",
          Content = infStaminaActive and "ON" or "OFF",
          Duration = 3,
-         Image = 4483362458
+         Image = 116346018087278
       })
    end
 })
@@ -180,9 +180,9 @@ local ButtonNoCooldown = VulnTab:CreateButton({
       end
       Rayfield:Notify({
          Title = "No Cooldown",
-         Content = "Cooldown removed.",
+         Content = "Done.",
          Duration = 5,
-         Image = 4483362458
+         Image = 116346018087278
       })
    end
 })
@@ -209,7 +209,7 @@ local ButtonSharkSteal = KuronaTab:CreateButton({
          Title = "Shark Steal",
          Content = sharkStealActive and "ON" or "OFF",
          Duration = 3,
-         Image = 4483362458
+         Image = 116346018087278
       })
    end
 })
@@ -243,7 +243,6 @@ game:GetService("RunService").Heartbeat:Connect(function()
    local hrp = player.Character:FindFirstChild("HumanoidRootPart")
    if not hrp then return end
    
-   -- Verificação de jogadores próximos
    for _, other in ipairs(game.Players:GetPlayers()) do
       if other ~= player and other.Character then
          local otherHrp = other.Character:FindFirstChild("HumanoidRootPart")
@@ -259,8 +258,7 @@ game:GetService("RunService").Heartbeat:Connect(function()
                   game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("BallService"):WaitForChild("RE"):WaitForChild("Dribble"):FireServer(unpack(dribleArgs))
                end
             end
-            
-            -- Shark Steal
+           
             if sharkStealActive and distance <= sharkDistance and (tick() - lastSharkTime) >= sharkCooldown then
                pcall(function()
                   local args = {
@@ -319,7 +317,7 @@ local function CreateToggleButton()
     btn.Size = UDim2.new(0, 60, 0, 60)
     btn.Position = UDim2.new(1, -80, 0.5, -100)
     btn.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-    btn.Image = "rbxassetid://138191573604636"
+    btn.Image = "rbxassetid://110103893163146"
     btn.ScaleType = Enum.ScaleType.Fit
     btn.AutoButtonColor = true
     btn.ZIndex = 999
