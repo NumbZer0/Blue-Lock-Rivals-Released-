@@ -131,6 +131,18 @@ local ButtonAutoSlide = VulnTab:CreateButton({
    end
 })
 
+local stealDistance = 25 
+local SliderStealDistance = VulnTab:CreateSlider({
+   Name = "Steal Distance",
+   Range = {10, 50}, 
+   Increment = 1,
+   Suffix = "m",
+   CurrentValue = 25,
+   Callback = function(Value)
+      stealDistance = Value
+   end
+})
+
 local autoDribleActive = false
 local dribleArgs = {"fd4e3f5f5e10484b9cd7a5b7efe5f228"}
 local ButtonAutoDrible = VulnTab:CreateButton({
