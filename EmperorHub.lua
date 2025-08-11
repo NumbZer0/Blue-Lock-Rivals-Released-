@@ -14,7 +14,7 @@ local Window = Rayfield:CreateWindow({
    },
    Discord = {
       Enabled = true,
-      Invite = "R9Cg8rgrcT",
+      Invite = "https://discord.gg/R9Cg8rgrcT",
       RememberJoins = true
    },
    KeySystem = true,
@@ -23,7 +23,7 @@ local Window = Rayfield:CreateWindow({
       Subtitle = "Key System",
       Note = "the keys are: OneEyedGhoul, MichaelKaiser",
       FileName = "Key",
-      SaveKey = true,
+      SaveKey = false,
       GrabKeyFromSite = false,
       Key = {"OneEyedGhoul", "oneeyedghoul", "MichaelKaiser", "michaelkaiser"}
    }
@@ -36,6 +36,7 @@ local sharkDistance = 15
 
 local VulnTab = Window:CreateTab("Vuln", 116346018087278)
 local KuronaTab = Window:CreateTab("Kurona", 116346018087278) 
+local CodesTab = Window:CreateTab("Codes", 116346018087278)
 
 local ParagraphCreator = VulnTab:CreateParagraph({
    Title = "SoyDevWin:",
@@ -308,6 +309,37 @@ game:GetService("UserInputService").WindowFocusReleased:Connect(function()
    end
    hitboxParts = {}
 end)
+
+local SectionCodes = CodesTab:CreateSection("Code Redemption")
+
+local validCodes = {
+    "SAEXSHIDOU",
+    "ISAGISHOES", 
+    "GOALMET"
+}
+
+local function redeemCode(code)
+    pcall(function()
+        local args = {code}
+        game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("CodesService"):WaitForChild("RF"):WaitForChild("Redeem"):InvokeServer(unpack(args))
+    end)
+end
+
+local ButtonRedeemAll = CodesTab:CreateButton({
+    Name = "Redeem all Codes",
+    Callback = function()
+        for _, code in pairs(validCodes) do
+            redeemCode(code)
+            task.wait(0.5) 
+        end
+        Rayfield:Notify({
+            Title = "W",
+            Content = "all codes have been redeemed.",
+            Duration = 5,
+            Image = 116346018087278
+        })
+    end
+})
 
 Rayfield:LoadConfiguration()
 
