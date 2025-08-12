@@ -11,6 +11,9 @@ local Window = Rayfield:CreateWindow({
       Enabled = true,
       FolderName = EmperorHub,
       FileName = "Emperor Hub"
+      
+      DisableRayfieldPrompts = true,
+      DisableBuildWarnings = true,
    },
    Discord = {
       Enabled = true,
@@ -36,6 +39,7 @@ local sharkDistance = 15
 
 local VulnTab = Window:CreateTab("Vuln", 14502433595)
 local KuronaTab = Window:CreateTab("Kurona", 10164183611) 
+local MobileTab = Window:CreateTab("Mobile", 5261794391)
 local CodesTab = Window:CreateTab("Codes", 88893754691906)
 
 local ParagraphCreator = VulnTab:CreateParagraph({
@@ -337,6 +341,99 @@ local ButtonRedeemAll = CodesTab:CreateButton({
             Content = "all codes have been redeemed.",
             Duration = 5,
             Image = 116346018087278
+        })
+    end
+})
+
+local ParagraphCreator = MobileTab:CreateParagraph({ 
+   Title = "OwO",
+   Content = "these functions are made just for fun and are made for mobile only."
+})
+
+local SectionMobile = MobileTab:CreateSection("Mobile Shortcuts")
+
+local emoteActive = false
+
+local UIS = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local Player = game:GetService("Players").LocalPlayer
+
+MobileTab:CreateToggle({
+    Name = "Emote :3",
+    CurrentValue = false,
+    Callback = function(Value)
+        emoteActive = Value
+        if emoteActive then
+            
+            local gui = game:GetService("CoreGui"):FindFirstChild("EmoteButton") or Instance.new("ScreenGui")
+            gui.Name = "EmoteButton"
+            gui.ResetOnSpawn = false
+            gui.IgnoreGuiInset = true
+            gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+            gui.Parent = game:GetService("CoreGui")
+
+            local btn = gui:FindFirstChild("EmoteToggle") or Instance.new("ImageButton")
+            btn.Name = "EmoteToggle"
+            btn.Size = UDim2.new(0, 60, 0, 60)
+            btn.Position = UDim2.new(1, -60, 0.5, -40)
+            btn.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+            btn.Image = "rbxassetid://113747851300451"
+            btn.ScaleType = Enum.ScaleType.Fit
+            btn.AutoButtonColor = true
+            btn.ZIndex = 999
+            btn.Parent = gui
+
+            local corner = btn:FindFirstChild("UICorner") or Instance.new("UICorner")
+            corner.CornerRadius = UDim.new(0, 40)
+            corner.Parent = btn
+
+            btn.MouseButton1Click:Connect(function()
+            
+                VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.X, false, game)
+                task.wait(0.1)
+                VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.X, false, game)
+            end)
+
+            
+            local dragging, dragStart, startPos = false
+            btn.InputBegan:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    dragging = true
+                    dragStart = input.Position
+                    startPos = btn.Position
+                end
+            end)
+
+            UIS.InputEnded:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    dragging = false
+                end
+            end)
+
+            RunService.RenderStepped:Connect(function()
+                if dragging then
+                    local delta = UIS:GetMouseLocation() - dragStart
+                    btn.Position = UDim2.new(
+                        startPos.X.Scale,
+                        startPos.X.Offset + math.floor(delta.X * 0.4),
+                        startPos.Y.Scale,
+                        startPos.Y.Offset + math.floor(delta.Y * 0.4)
+                    )
+                end
+            end)
+        else
+      
+            local gui = game:GetService("CoreGui"):FindFirstChild("EmoteButton")
+            if gui then
+                gui:Destroy()
+            end
+        end
+        Rayfield:Notify({
+            Title = "Emote :3",
+            Content = emoteActive and "ON" or "OFF",
+            Duration = 2,
+            Image = 10653372143
         })
     end
 })
