@@ -1,9 +1,9 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "Emperor Hub",
+   Name = "Emperor Hub | Blue Lock: Rivals (Reworked)",
    Icon = 116346018087278,
-   LoadingTitle = "Emperor Hub",
+   LoadingTitle = "Emperor Hub | Blue Lock: Rivals (Reworked)",
    LoadingSubtitle = "by SoyDevWin",
    Theme = "Serenity",
    ToggleUIKeybind = "K",
@@ -34,9 +34,9 @@ local lastSharkTime = 0
 local sharkCooldown = 3
 local sharkDistance = 15
 
-local VulnTab = Window:CreateTab("Vuln", 116346018087278)
-local KuronaTab = Window:CreateTab("Kurona", 116346018087278) 
-local CodesTab = Window:CreateTab("Codes", 116346018087278)
+local VulnTab = Window:CreateTab("Vuln", 14502433595)
+local KuronaTab = Window:CreateTab("Kurona", 10164183611) 
+local CodesTab = Window:CreateTab("Codes", 88893754691906)
 
 local ParagraphCreator = VulnTab:CreateParagraph({
    Title = "SoyDevWin:",
@@ -341,8 +341,6 @@ local ButtonRedeemAll = CodesTab:CreateButton({
     end
 })
 
-Rayfield:LoadConfiguration()
-
 local UIS = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 local VirtualInputManager = game:GetService("VirtualInputManager")
@@ -358,8 +356,8 @@ local function CreateToggleButton()
 
     local btn = Instance.new("ImageButton")
     btn.Name = "ZToggle"
-    btn.Size = UDim2.new(0, 60, 0, 60)
-    btn.Position = UDim2.new(1, -80, 0.5, -100)
+    btn.Size = UDim2.new(0, 40, 0, 40)
+    btn.Position = UDim2.new(1, -40, 0.5, 70)
     btn.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
     btn.Image = "rbxassetid://110103893163146"
     btn.ScaleType = Enum.ScaleType.Fit
@@ -385,7 +383,7 @@ local function CreateToggleButton()
             dragStart = input.Position
             startPos = btn.Position
         end
-    end)
+    end) 
 
     UIS.InputEnded:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -407,3 +405,4 @@ local function CreateToggleButton()
 end
 
 CreateToggleButton()
+Rayfield:LoadConfiguration()
