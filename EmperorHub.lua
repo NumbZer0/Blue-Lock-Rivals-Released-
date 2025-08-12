@@ -9,18 +9,18 @@ local Window = Rayfield:CreateWindow({
    ToggleUIKeybind = "K",
    ConfigurationSaving = {
       Enabled = true,
-      FolderName = EmperorHub,
+      FolderName = "EmperorHub",
       FileName = "Emperor Hub"
-      
-      DisableRayfieldPrompts = true,
-      DisableBuildWarnings = true,
    },
+   DisableRayfieldPrompts = true, 
+   DisableBuildWarnings = true,   
+   
    Discord = {
       Enabled = true,
       Invite = "https://discord.gg/R9Cg8rgrcT",
       RememberJoins = true
    },
-   KeySystem = true,
+   KeySystem = false,
    KeySettings = {
       Title = "Emperor Keys",
       Subtitle = "Key System",
@@ -39,8 +39,27 @@ local sharkDistance = 15
 
 local VulnTab = Window:CreateTab("Vuln", 14502433595)
 local KuronaTab = Window:CreateTab("Kurona", 10164183611) 
+local StylesTab = Window:CreateTab("Styles", 18720028391)
 local MobileTab = Window:CreateTab("Mobile", 5261794391)
 local CodesTab = Window:CreateTab("Codes", 88893754691906)
+
+local ParagraphCreator = StylesTab:CreateParagraph({
+   Title = ":3",
+   Content = "the custom styles that will be here are completely OP's."
+})
+
+local ButtonDiddyStyle = StylesTab:CreateButton({
+   Name = "Diddy Style",
+   Callback = function()
+      loadstring(game:HttpGet("https://raw.githubusercontent.com/p2K9298sigkahot/Ambatukammmm/refs/heads/main/PornhubMadeByP2K"))()
+      Rayfield:Notify({
+         Title = "W",
+         Content = "👀. agora eles precisam ter cuidado por onde sentam.",
+         Duration = 3,
+         Image = 10653378249
+      })
+   end
+})
 
 local ParagraphCreator = VulnTab:CreateParagraph({
    Title = "SoyDevWin:",
