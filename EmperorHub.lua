@@ -336,9 +336,10 @@ end)
 local SectionCodes = CodesTab:CreateSection("Code Redemption")
 
 local validCodes = {
-    "SAEXSHIDOU",
-    "ISAGISHOES", 
-    "GOALMET"
+    "CHARLESTIME",
+    "TONGUESOUT", 
+    "DELAYSORRY",
+    "1.5GOALHIT"
 }
 
 local function redeemCode(code)
